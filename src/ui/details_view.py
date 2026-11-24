@@ -3,6 +3,7 @@ from tkinter import messagebox, ttk
 
 from src.core.masking import mask_password, unmask_password
 from src.data.errors import DataError
+from src.ui.validation import fit_for_display
 
 COPIED_TEXT = "Пароль скопирован. Буфер обмена очистится через 30 секунд."
 
@@ -14,14 +15,15 @@ class DetailsView(ttk.Frame):
         self._entry = entry
         self._revealed = False
 
-        ttk.Label(self, text=entry.service, font=("TkDefaultFont", 14, "bold")).grid(
+        ttk.Label(self, text=fit_for_display(entry.service), font=("TkDefaultFont", 14, "bold"),
+                  wraplength=700).grid(
             row=0, column=0, columnspan=3, sticky="w", pady=(0, 12))
 
         rows = (("Логин", entry.login), ("Адрес (URL)", entry.url), ("Заметка", entry.note))
         row = 1
         for caption, value in rows:
             ttk.Label(self, text=caption).grid(row=row, column=0, sticky="w", pady=4)
-            ttk.Label(self, text=value or "—", wraplength=420).grid(row=row, column=1, sticky="w", pady=4)
+            ttk.Label(self, text=fit_for_display(value) or "—", wraplength=420).grid(row=row, column=1, sticky="w", pady=4)
             row += 1
 
         ttk.Label(self, text="Пароль").grid(row=row, column=0, sticky="w", pady=4)
@@ -46,7 +48,7 @@ class DetailsView(ttk.Frame):
 
     def _render_password(self):
         if self._revealed:
-            self._password_label.config(text=unmask_password(self._entry.password))
+            self._password_label.config(text=fit_for_display(unmask_password(self._entry.password)))
         else:
             self._password_label.config(text=mask_password(self._entry.password))
 
