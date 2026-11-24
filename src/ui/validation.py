@@ -1,5 +1,13 @@
 from src.core.generator import MAX_LENGTH, MIN_LENGTH
 
+DISPLAY_LIMIT = 200
+
+
+def fit_for_display(text: str) -> str:
+    if len(text) <= DISPLAY_LIMIT:
+        return text
+    return f"{text[:DISPLAY_LIMIT]}… (ещё {len(text) - DISPLAY_LIMIT} симв.)"
+
 
 def validate_service(service: str) -> str | None:
     if not service.strip():
