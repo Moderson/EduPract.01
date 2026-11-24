@@ -12,7 +12,7 @@ def password_strength(password: str) -> str:
         any(c in string.digits for c in password),
         any(not c.isalnum() for c in password),
     ])
-    length_bonus = (len(password) >= 12) + (len(password) >= 16)
+    length_bonus = ((len(password) >= 12) + (len(password) >= 16)) if classes >= 2 else 0
     score = classes + length_bonus if password else 0
 
     if score <= 2:
